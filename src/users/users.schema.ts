@@ -2,6 +2,9 @@ import Joi from 'joi';
 
 export const userSchema = Joi.object().keys({
   login: Joi.string()
+    .alphanum()
+    .min(3)
+    .max(30)
     .required(),
   password: Joi.string()
     .alphanum()
@@ -9,7 +12,7 @@ export const userSchema = Joi.object().keys({
     .required(),
   age: Joi.number()
     .integer()
-    .max(4)
+    .min(4)
     .max(130)
     .required(),
 });
