@@ -53,21 +53,14 @@ export const usersRouter = Router()
   .get('/',
     catchApiError<Request<unknown, unknown, unknown, AutoSuggestedUsersQuery>>(getAutoSuggestUsers))
   .post('/',
-    validateSchema<Request<unknown, unknown, UserDto>>(userSchema),
+    validateSchema<UserDto>(userSchema),
     catchApiError<Request<unknown, unknown, UserDto>>(createItem))
   .get('/:id',
     catchApiError<Request<UserParams>>(getById))
   .put('/:id',
-    validateSchema<Request<unknown, unknown, UserDto>>(userSchema),
+    validateSchema<UserDto>(userSchema),
     catchApiError<Request<UserParams, unknown, UserDto>>(updateItem))
   .delete(
     '/:id',
     catchApiError<Request<UserParams>>(removeItem),
   );
-
-// Add server-side validation for create/update operations of User entity:
-// •all fields are required;
-// •login validation is required;
-// •password must contain letters and numbers;
-// In case of any property does not meet the validation requirements or the field is absent,
-// return 400 (Bad Request) and detailed error message.

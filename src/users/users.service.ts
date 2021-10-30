@@ -36,7 +36,6 @@ class UsersService {
       id: uuidv4(),
       isDeleted: false,
     };
-    console.log(payload, newItem);
     this.data.push(newItem);
     return newItem;
   }

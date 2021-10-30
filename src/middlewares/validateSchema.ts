@@ -17,7 +17,7 @@ export const errorResponse = (schemaErrors: ValidationErrorItem[]): ValidationAp
   };
 };
 
-export const validateSchema = <TBody>(schema: Schema) => (req: Request<unknown, TBody>, res: Response, next: NextFunction) => {
+export const validateSchema = <TBody>(schema: Schema) => (req: Request<unknown, unknown, TBody>, res: Response, next: NextFunction) => {
   const { error } = schema.validate(req.body, {
     abortEarly: false,
     allowUnknown: false,
