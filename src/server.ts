@@ -4,7 +4,7 @@ import app from './app';
 
 dotenv.config();
 
-const PORT = parseInt(process.env.PORT ?? '3000', 10);
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Application started on port ${PORT}!`);

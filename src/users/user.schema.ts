@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export const userSchema = Joi.object().keys({
+const userSchema = Joi.object().keys({
   login: Joi.string()
     .alphanum()
     .min(3)
@@ -16,3 +16,5 @@ export const userSchema = Joi.object().keys({
     .max(130)
     .required(),
 });
+
+export default userSchema;
