@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { usersRouter } from './users/users.router';
+import UsersRouter from './users/user.router';
 
 export const apiRouter = Router()
-  .use('/users', usersRouter);
+  .use('/users', UsersRouter);
