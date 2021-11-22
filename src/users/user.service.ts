@@ -24,7 +24,12 @@ const create = async (payload: UserInput): Promise<UserOutput> => UserDal.create
 
 const update = async (id: string, payload: UserInput): Promise<UserOutput> => UserDal.update(id, payload);
 
-const deleteById = async (id: string): Promise<UserOutput> => UserDal.deleteById(id);
+const deleteById = async (id: string): Promise<UserOutput> => {
+  const result = await UserDal.deleteById(id);
+  return result;
+};
+
+const addUsersToGroup = async (userIds: string[], groupId: string): Promise<void> => UserDal.addUsersToGroup(userIds, groupId);
 
 export default {
   getAll,
@@ -33,4 +38,5 @@ export default {
   create,
   update,
   deleteById,
+  addUsersToGroup,
 };

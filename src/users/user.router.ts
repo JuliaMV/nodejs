@@ -3,6 +3,7 @@ import { Router, Request } from 'express';
 import { catchApiError, validateSchema } from '../middlewares';
 
 import {
+  AssociateUsers,
   AutoSuggestedUsersQuery, User, UserInput, UserParams,
 } from './types';
 
@@ -23,6 +24,8 @@ const UsersRouter = Router()
   .delete(
     '/:id',
     catchApiError<Request<UserParams>>(UserController.removeItem),
-  );
+  )
+  .post('/associate',
+    catchApiError<Request<unknown, unknown, AssociateUsers>>(UserController.addUsersToGroup));
 
 export default UsersRouter;

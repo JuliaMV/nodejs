@@ -1,6 +1,6 @@
 import User from '../users/user.model';
 import Group from '../groups/group.model';
-import UserGroup from '../user-groups/user-group.model';
+import UserGroup from '../associations/user-group.model';
 
 const isDev = process.env.NODE_ENV !== 'production';
 

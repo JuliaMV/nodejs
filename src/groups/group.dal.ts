@@ -3,6 +3,7 @@ import { InternalError, ResourceNotFoundError } from '../errors';
 import { GroupInput, GroupOutput } from './types';
 
 import GroupModel from './group.model';
+import UserGroupModel from '../associations/user-group.model';
 
 const create = async (payload: GroupInput): Promise<GroupOutput> => {
   try {
@@ -44,6 +45,11 @@ const getById = async (id: string): Promise<GroupOutput | never> => {
 const deleteById = async (id: string): Promise<GroupOutput | never> => {
   const group: GroupModel = await findModel(id);
   try {
+    await UserGroupModel.destroy({
+      where: {
+        groupId: id,
+      },
+    });
     await group.destroy();
   } catch (err) {
     throw new InternalError();
