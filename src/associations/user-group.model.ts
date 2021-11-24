@@ -11,18 +11,20 @@ class UserGroupModel extends Model {
 
 UserGroupModel.init({
   userId: {
-    type: DataTypes.STRING,
+    type: DataTypes.UUID,
     references: {
       model: UserModel,
       key: 'id',
     },
+    unique: false,
   },
   groupId: {
-    type: DataTypes.STRING,
+    type: DataTypes.UUID,
     references: {
       model: GroupModel,
       key: 'id',
     },
+    unique: false,
   },
 }, {
   timestamps: false,
@@ -30,7 +32,7 @@ UserGroupModel.init({
   modelName: 'UserGroup',
 });
 
-UserModel.belongsToMany(GroupModel, { through: UserGroupModel, foreignKey: 'groupId' });
-GroupModel.belongsToMany(UserModel, { through: UserGroupModel, foreignKey: 'userId' });
+UserModel.belongsToMany(GroupModel, { through: UserGroupModel, foreignKey: 'userId' });
+GroupModel.belongsToMany(UserModel, { through: UserGroupModel, foreignKey: 'groupId' });
 
 export default UserGroupModel;

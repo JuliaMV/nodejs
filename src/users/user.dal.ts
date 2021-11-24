@@ -84,10 +84,12 @@ const addUsersToGroup = async (userIds: string[], groupId: string): Promise<void
       transaction,
     });
 
-    await UserGroupModel.bulkCreate(users.map((user) => ({
-      userId: user.get().id,
-      groupId: group?.get().id,
-    })), { transaction });
+    const records = users.map((user) => ({
+      userId: user.id,
+      groupId: group?.id,
+    }));
+
+    await UserGroupModel.bulkCreate(records, { transaction });
 
     await transaction.commit();
   } catch (err) {
