@@ -13,7 +13,10 @@ export const catchApiError = <TReq>(fn: ApiHandler<TReq>) => async (req: TReq, r
     if (errStatus) {
       res.status(errStatus).send(message);
     } else {
-      logger.log('error', `Unhandled API Error at ${(req as unknown as Request).originalUrl}`);
+      const {
+        method, originalUrl, params, body,
+      } = req as unknown as Request;
+      logger.log('error', `Unhandled API Error at ${method} ${originalUrl} with params ${JSON.stringify(params)} ${JSON.stringify(body)}, message "${(err as unknown as Error).message}"`);
       res.sendStatus(status.INTERNAL_SERVER_ERROR);
     }
   }
