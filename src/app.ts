@@ -3,6 +3,7 @@ import express from 'express';
 import { apiRouter } from './api';
 import dbInit from './db/init';
 import { migrateAll } from './db/umzug';
+import { logRequestInfo } from './middlewares';
 
 dbInit()
   .then(migrateAll)
@@ -15,6 +16,6 @@ dbInit()
 const app = express();
 
 app.use(express.json());
-app.use('/api', apiRouter);
+app.use('/api', logRequestInfo, apiRouter);
 
 export default app;
