@@ -1,7 +1,11 @@
+import { Op } from 'sequelize';
 import { UserInput, UserOutput } from './types';
 import { InternalError, ResourceNotFoundError } from '../errors';
 
+import sequelizeConnection from '../db/config';
 import UserModel from './user.model';
+import GroupModel from '../groups/group.model';
+import UserGroupModel from '../associations/user-group.model';
 
 const create = async (payload: UserInput): Promise<UserOutput> => {
   try {
@@ -44,6 +48,11 @@ const deleteById = async (id: string): Promise<UserOutput | never> => {
   const user: UserModel = await findModel(id);
   try {
     await user.destroy();
+    await UserGroupModel.destroy({
+      where: {
+        userId: id,
+      },
+    });
   } catch (err) {
     throw new InternalError();
   }
@@ -62,10 +71,38 @@ const getAll = async (): Promise<UserOutput[] | never> => {
   }
 };
 
+const addUsersToGroup = async (userIds: string[], groupId: string): Promise<void> => {
+  const transaction = await sequelizeConnection.transaction();
+  try {
+    const group = await GroupModel.findByPk(groupId, { transaction });
+    const users = await UserModel.findAll({
+      where: {
+        id: {
+          [Op.or]: userIds,
+        },
+      },
+      transaction,
+    });
+
+    const records = users.map((user) => ({
+      userId: user.id,
+      groupId: group?.id,
+    }));
+
+    await UserGroupModel.bulkCreate(records, { transaction });
+
+    await transaction.commit();
+  } catch (err) {
+    await transaction.rollback();
+    throw new InternalError();
+  }
+};
+
 export default {
   getAll,
   create,
   update,
   getById,
   deleteById,
+  addUsersToGroup,
 };

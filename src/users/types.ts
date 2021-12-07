@@ -20,3 +20,8 @@ export interface UserInput extends Optional<User, 'id'> {}
 export interface UserOutput extends Required<User> {}
 
 export interface UserParams extends Pick<User, 'id'> {}
+
+export interface AssociateUsers {
+  userIds: string[];
+  groupId: string;
+}
