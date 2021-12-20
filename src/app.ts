@@ -1,4 +1,6 @@
 import express from 'express';
+// @ts-ignore
+import cors from 'cors';
 
 import { apiRouter } from './api';
 import dbInit from './db/init';
@@ -16,6 +18,7 @@ dbInit()
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use('/api', logRequestInfo, apiRouter);
 
 export default app;

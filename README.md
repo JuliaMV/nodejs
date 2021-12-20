@@ -3,4 +3,4 @@
 - install dependencies 
 ```npm install```
 - start application
-```run npm start:dev```
+```npm run start:dev```
