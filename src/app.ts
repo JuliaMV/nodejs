@@ -1,5 +1,4 @@
 import express from 'express';
-// @ts-ignore
 import cors from 'cors';
 
 import { apiRouter } from './api';
