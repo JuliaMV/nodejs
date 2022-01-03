@@ -15,7 +15,7 @@ const getAutoSuggestUsers: ApiHandler<Request<unknown, unknown, unknown, AutoSug
   res.status(status.OK).json(result);
 };
 
-const createItem: ApiHandler<Request<unknown, unknown, UserInput>> = async (req, res) => {
+export const createItem: ApiHandler<Request<unknown, unknown, UserInput>> = async (req, res) => {
   const { body } = req;
   const result = await UserService.create(body);
   res.status(status.OK).json(result);
