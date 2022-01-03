@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { mock, mockReset } from 'jest-mock-extended';
 
-import UserController from '../users/user.controller';
-import UserService from '../users/user.service';
-import { User } from '../users/types';
+import UserController from '../src/users/user.controller';
+import UserService from '../src/users/user.service';
+import { User } from '../src/users/types';
 
 describe('Test Users controller', () => {
   const res = mock<Response>();
