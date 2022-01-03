@@ -1,56 +1,73 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import status from 'http-status';
 
-import { ApiHandler } from '../types';
 import {
-  AutoSuggestedUsersQuery, UserParams, UserInput, AssociateUsers,
+  UserInput, AssociateUsers,
 } from './types';
 
 import UserService from './user.service';
 
-const getAutoSuggestUsers: ApiHandler<Request<unknown, unknown, unknown, AutoSuggestedUsersQuery>> = async (req, res) => {
-  // TODO: add validation for query params
-  const { limit, loginSubstring } = req.query;
-  const result = await UserService.getAutoSuggestUsers(loginSubstring, limit);
-  res.status(status.OK).json(result);
-};
+class UserController {
+  private userService: UserService;
 
-export const createItem: ApiHandler<Request<unknown, unknown, UserInput>> = async (req, res) => {
-  const { body } = req;
-  const result = await UserService.create(body);
-  res.status(status.OK).json(result);
-};
+  constructor(service: UserService) {
+    this.userService = service;
+  }
 
-const getById: ApiHandler<Request<UserParams>> = async (req, res) => {
-  const { id } = req.params;
-  const result = await UserService.getById(id);
-  res.status(status.OK).json(result);
-};
+  async getAutoSuggestUsers(req: Request, res: Response) {
+    // TODO: add validation for query params
+    const {
+      limit,
+      loginSubstring,
+    } = req.query;
+    const result = await this.userService.getAutoSuggestUsers(loginSubstring as string, Number(limit));
+    res.status(status.OK)
+      .json(result);
+  }
 
-const updateItem: ApiHandler<Request<UserParams, unknown, UserInput>> = async (req, res) => {
-  const { params: { id }, body } = req;
-  const result = await UserService.update(id, body);
-  res.status(status.OK).json(result);
-};
+  async createItem(req: Request<unknown, unknown, UserInput>, res: Response) {
+    const { body } = req;
+    const result = await this.userService.create(body);
+    res.status(status.OK)
+      .json(result);
+  }
 
-const removeItem: ApiHandler<Request<UserParams>> = async (req, res) => {
-  const { id } = req.params;
-  const result = await UserService.deleteById(id);
-  res.status(status.OK).json(result);
-};
+  async getById(req: Request, res: Response) {
+    const { id } = req.params;
+    const result = await this.userService.getById(id);
+    res.status(status.OK)
+      .json(result);
+  }
 
-const addUsersToGroup: ApiHandler<Request<unknown, unknown, AssociateUsers>> = async (req, res) => {
-  // TODO: add validation
-  const { body: { userIds, groupId } } = req;
-  const result = await UserService.addUsersToGroup(userIds, groupId);
-  res.status(status.OK).json(result);
-};
+  async updateItem(req: Request, res: Response) {
+    const {
+      params: { id },
+      body,
+    } = req;
+    const result = await this.userService.update(id, body);
+    res.status(status.OK)
+      .json(result);
+  }
 
-export default {
-  getAutoSuggestUsers,
-  createItem,
-  getById,
-  updateItem,
-  removeItem,
-  addUsersToGroup,
-};
+  async removeItem(req: Request, res: Response) {
+    const { id } = req.params;
+    const result = await this.userService.deleteById(id);
+    res.status(status.OK)
+      .json(result);
+  }
+
+  async addUsersToGroup(req: Request<unknown, unknown, AssociateUsers>, res: Response) {
+    // TODO: add validation
+    const {
+      body: {
+        userIds,
+        groupId,
+      },
+    } = req;
+    const result = await this.userService.addUsersToGroup(userIds, groupId);
+    res.status(status.OK)
+      .json(result);
+  }
+}
+
+export default UserController;
