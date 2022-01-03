@@ -4,7 +4,7 @@ import { catchApiError } from '../middlewares';
 
 import GroupController from './group.controller';
 import { GroupInput, GroupParams } from './types';
-import GroupService from "./group.service";
+import GroupService from './group.service';
 
 const service = new GroupService();
 const controller = new GroupController(service);
