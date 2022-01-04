@@ -3,29 +3,32 @@ import { Router, Request } from 'express';
 import { catchApiError, validateSchema } from '../middlewares';
 
 import {
-  AssociateUsers,
-  AutoSuggestedUsersQuery, User, UserInput, UserParams,
+  AssociateUsers, User, UserInput, UserParams,
 } from './types';
 
 import UserSchema from './user.schema';
 import UserController from './user.controller';
+import UserService from './user.service';
+
+const service = new UserService();
+const controller = new UserController(service);
 
 const UsersRouter = Router()
   .get('/',
-    catchApiError<Request<unknown, unknown, unknown, AutoSuggestedUsersQuery>>(UserController.getAutoSuggestUsers))
+    catchApiError<Request>(controller.getAutoSuggestUsers))
   .post('/',
     validateSchema<User>(UserSchema),
-    catchApiError<Request<unknown, unknown, UserInput>>(UserController.createItem))
+    catchApiError<Request<unknown, unknown, UserInput>>(controller.createItem))
   .get('/:id',
-    catchApiError<Request<UserParams>>(UserController.getById))
+    catchApiError<Request<UserParams>>(controller.getById))
   .put('/:id',
     validateSchema<User>(UserSchema),
-    catchApiError<Request<UserParams, unknown, UserInput>>(UserController.updateItem))
+    catchApiError<Request<UserParams, unknown, UserInput>>(controller.updateItem))
   .delete(
     '/:id',
-    catchApiError<Request<UserParams>>(UserController.removeItem),
+    catchApiError<Request<UserParams>>(controller.removeItem),
   )
   .post('/associate',
-    catchApiError<Request<unknown, unknown, AssociateUsers>>(UserController.addUsersToGroup));
+    catchApiError<Request<unknown, unknown, AssociateUsers>>(controller.addUsersToGroup));
 
 export default UsersRouter;

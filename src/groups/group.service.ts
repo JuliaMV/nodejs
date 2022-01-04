@@ -1,24 +1,30 @@
+/* eslint-disable class-methods-use-this */
+
 import { GroupInput, GroupOutput } from './types';
 
 import GroupDal from './group.dal';
 
-const getAll = async (): Promise<GroupOutput[]> => GroupDal.getAll();
+class GroupService {
+  async getAll(): Promise<GroupOutput[]> {
+    return GroupDal.getAll();
+  }
 
-const getById = async (id: string): Promise<GroupOutput> => {
-  const entity = await GroupDal.getById(id);
-  return entity;
-};
+  async getById(id: string): Promise<GroupOutput> {
+    const entity = await GroupDal.getById(id);
+    return entity;
+  }
 
-const create = async (payload: GroupInput): Promise<GroupOutput> => GroupDal.create(payload);
+  async create(payload: GroupInput): Promise<GroupOutput> {
+    return GroupDal.create(payload);
+  }
 
-const update = async (id: string, payload: GroupInput): Promise<GroupOutput> => GroupDal.update(id, payload);
+  async update(id: string, payload: GroupInput): Promise<GroupOutput> {
+    return GroupDal.update(id, payload);
+  }
 
-const deleteById = async (id: string): Promise<GroupOutput> => GroupDal.deleteById(id);
+  async deleteById(id: string): Promise<GroupOutput> {
+    return GroupDal.deleteById(id);
+  }
+}
 
-export default {
-  getAll,
-  getById,
-  create,
-  update,
-  deleteById,
-};
+export default GroupService;
